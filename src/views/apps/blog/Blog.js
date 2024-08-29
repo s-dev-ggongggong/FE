@@ -2,7 +2,7 @@ import React from 'react';
 import Breadcrumb from '../../../layouts/full/shared/breadcrumb/Breadcrumb';
 import PageContainer from '../../../components/container/PageContainer';
 import BlogListing from 'src/components/apps/blog/BlogListing';
-import ExButton from '../../forms/form-elements/MuiButton';
+import { Button, Stack } from '@mui/material';
 
 const Blog = () => {
   return (
@@ -11,7 +11,6 @@ const Blog = () => {
       {/* ------------------------------------------- */}
       {/* Blog Listing */}
       {/* ------------------------------------------- */}
-      
       <BlogListing />
     </PageContainer>
   );

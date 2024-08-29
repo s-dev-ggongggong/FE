@@ -105,14 +105,17 @@ const BlogFeaturedCard = ({ post, index }) => {
                   <Box>
                     <Stack direction="row">
                       <Tooltip title={author.name} placement="top">
-                        <Avatar aria-label="recipe" src={author.avatar}></Avatar>
+                        {/* <Avatar aria-label="recipe" src={author.avatar}></Avatar> */}
                       </Tooltip>
+                      <Tooltip title="기간 : " placement='bottom'>
                       <Chip
                         sx={{ marginLeft: 'auto' }}
                         label={category}
                         size="small"
                         color="primary"
                       ></Chip>
+                      </Tooltip>
+                      
                     </Stack>
                   </Box>
                   <Box>
@@ -136,7 +139,6 @@ const BlogFeaturedCard = ({ post, index }) => {
                       <Stack direction="row" gap={1} alignItems="center">
                         <IconMessage2 size="18" /> {comments.length}
                       </Stack>
-
                       <Stack direction="row" ml="auto" alignItems="center">
                         <IconPoint size="16" />
                         <small>{format(new Date(createdAt), 'E, MMM d')}</small>

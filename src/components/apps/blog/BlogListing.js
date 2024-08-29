@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Grid, Pagination } from '@mui/material';
+import { Button, Grid, Pagination, Stack, Typography } from '@mui/material';
 import BlogCard from './BlogCard';
 import { orderBy } from 'lodash';
 import { useSelector, useDispatch } from 'react-redux';
@@ -41,19 +41,29 @@ const BlogListing = () => {
     ),
   );
   const featuredPost = useSelector((state) => filterFeaturedpost(state.blogReducer.blogposts));
-
+  console.log(featuredPost)
+  console.log(blogPosts)
   return (
-    <Grid container spacing={3}>
-      {featuredPost.map((post, index) => {
-        return <BlogFeaturedCard index={index} post={post} key={post.title} />;
-      })}
-      {blogPosts.map((post) => {
-        return <BlogCard post={post} key={post.id} />;
-      })}
-      <Grid item lg={12} sm={12} mt={3}>
-        <Pagination count={10} color="primary" sx={{ display: 'flex', justifyContent: 'center' }} />
+    <div>
+      <Stack direction={'row'} justifyContent={'space-between'}>
+        <Typography variant='h3'>전체 {blogPosts.length+featuredPost.length}개</Typography>
+        <Button>새로 만들기</Button>
+      </Stack>
+      <br/>
+      <Grid container spacing={3}>
+        {featuredPost.map((post, index) => {
+          return <BlogFeaturedCard index={index} post={post} key={post.title} />;
+        })}
+
+        {blogPosts.map((post) => {
+          return <BlogCard post={post} key={post.id} />;
+        })}
+        <Grid item lg={12} sm={12} mt={3}>
+          <Pagination count={10} color="primary" sx={{ display: 'flex', justifyContent: 'center' }} />
+        </Grid>
       </Grid>
-    </Grid>
+    </div>
+
   );
 };
 

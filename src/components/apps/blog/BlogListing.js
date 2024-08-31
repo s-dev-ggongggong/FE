@@ -5,9 +5,11 @@ import { orderBy } from 'lodash';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchBlogPosts } from 'src/store/apps/blog/BlogSlice';
 import BlogFeaturedCard from './BlogFeaturedCard';
+import { useNavigate } from 'react-router-dom';
 
 const BlogListing = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchBlogPosts());
@@ -40,6 +42,9 @@ const BlogListing = () => {
       state.blogReducer.blogSearch,
     ),
   );
+  const handleCreateClick = () => {
+    navigate('/apps/training/create');
+  };
   const featuredPost = useSelector((state) => filterFeaturedpost(state.blogReducer.blogposts));
   console.log(featuredPost)
   console.log(blogPosts)
@@ -47,7 +52,7 @@ const BlogListing = () => {
     <div>
       <Stack direction={'row'} justifyContent={'space-between'}>
         <Typography variant='h3'>전체 {blogPosts.length+featuredPost.length}개</Typography>
-        <Button>새로 만들기</Button>
+        <Button onClick={handleCreateClick}>새로 만들기</Button>
       </Stack>
       <br/>
       <Grid container spacing={3}>

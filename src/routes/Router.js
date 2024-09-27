@@ -13,7 +13,7 @@ const EcommerceDash = Loadable(lazy(() => import('../views/dashboard/Ecommerce')
 const Attach = Loadable(lazy(()=> import('../views/apps/datas/Attach')));
 const Urls = Loadable(lazy(()=> import('../views/apps/datas/Urls')));
 const CreateTraining = Loadable(lazy(()=> import('../views/apps/blog/TrainingCreate')));
-
+const ViewTraining = Loadable(lazy(()=> import('../views/apps/blog/TrainingView')));
 
 
 /* ****Apps***** */
@@ -126,7 +126,8 @@ const Router = [
     children: [
       
       { path: '/', element: <Navigate to="/dashboards/modern" /> },
-      { path: '/apps/training/create', element: <CreateTraining/> }, 
+      { path: '/apps/training/create', element: <CreateTraining/> },
+      { path: '/apps/training/view/:id', element: <ViewTraining/> }, 
       { path: '/apps/data/files', element: <Attach/> },
       { path: '/apps/data/urls', element: <Urls/> },
       { path: '/dashboards/modern', exact: true, element: <ModernDash /> },

@@ -80,7 +80,7 @@ const BlogPost = [
     view: random(9999),
     share: random(9999),
     category: 'Gadget',
-    featured: false,
+    featured: true,
     author: {
       id: chance.integer({ min: 1, max: 2000 }),
       avatar: user1,
@@ -97,7 +97,7 @@ const BlogPost = [
     view: random(9999),
     share: random(9999),
     category: 'Lifestyle',
-    featured: false,
+    featured: true,
     author: {
       id: chance.integer({ min: 1, max: 2000 }),
       avatar: user2,
@@ -114,7 +114,7 @@ const BlogPost = [
     view: random(9999),
     share: random(9999),
     category: 'Design',
-    featured: false,
+    featured: true,
     author: {
       id: chance.integer({ min: 1, max: 2000 }),
       avatar: user3,
@@ -131,7 +131,7 @@ const BlogPost = [
     view: random(9999),
     share: random(9999),
     category: 'Design',
-    featured: false,
+    featured: true,
     author: {
       id: chance.integer({ min: 1, max: 2000 }),
       avatar: user4,
@@ -148,7 +148,7 @@ const BlogPost = [
     view: random(9999),
     share: random(9999),
     category: 'Lifestyle',
-    featured: false,
+    featured: true,
     author: {
       id: chance.integer({ min: 1, max: 2000 }),
       avatar: user5,
@@ -165,7 +165,7 @@ const BlogPost = [
     view: random(9999),
     share: random(9999),
     category: 'Gadget',
-    featured: false,
+    featured: true,
     author: {
       id: chance.integer({ min: 1, max: 2000 }),
       avatar: user6,
@@ -182,7 +182,7 @@ const BlogPost = [
     view: random(9999),
     share: random(9999),
     category: 'Social',
-    featured: false,
+    featured: true,
     author: {
       id: chance.integer({ min: 1, max: 2000 }),
       avatar: user2,
@@ -199,7 +199,7 @@ const BlogPost = [
     view: random(9999),
     share: random(9999),
     category: 'Health',
-    featured: false,
+    featured: true,
     author: {
       id: chance.integer({ min: 1, max: 2000 }),
       avatar: user3,

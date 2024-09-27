@@ -36,9 +36,18 @@ export default defineConfig({
     },
   },
 
-  // plugins: [react(),svgr({
+  // plugins: [react(), svgr({
   //   exportAsDefault: true
   // })],
-
   plugins: [svgr(), react()],
+
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8000', // 백엔드 서버 주소
+        changeOrigin: true, // 크로스 도메인 허용
+        rewrite: (path) => path.replace(/^\/api/, ''), // 경로에서 '/api' 제거
+      },
+    },
+  },
 });

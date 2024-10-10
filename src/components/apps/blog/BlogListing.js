@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Grid, Stack, Typography, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
+import { Button, Grid, Stack, Typography, Select, MenuItem, FormControl } from '@mui/material';
 import BlogFeaturedCard from './BlogFeaturedCard';
 import { useNavigate } from 'react-router-dom';
 import { isBefore, isAfter, compareAsc, compareDesc } from 'date-fns';
@@ -20,10 +20,15 @@ const BlogListing = () => {
                 return response.json();
             })
             .then((data) => {
-                const trainingData = data?.data?.data;
+                const trainingData = data?.data;
                 if (trainingData && Array.isArray(trainingData)) {
-                    setTrainings(trainingData);
-                    setFilteredTrainings(trainingData); // 초기 필터 데이터 설정
+                    const formattedData = trainingData.map(training => ({
+                        ...training,
+                        training_start: new Date(training.training_start),
+                        training_end: new Date(training.training_end)
+                    }));
+                    setTrainings(formattedData);
+                    setFilteredTrainings(formattedData); // 초기 필터 데이터 설정
                 } else {
                     console.error('Unexpected response structure or no training data:', data);
                 }
@@ -43,22 +48,22 @@ const BlogListing = () => {
 
         switch (filter) {
             case 'date-asc': // 시간 기준 오름차순 (오래된 순)
-                sortedTrainings.sort((a, b) => compareAsc(new Date(a.trainingStart), new Date(b.trainingStart)));
+                sortedTrainings.sort((a, b) => compareAsc(a.training_start, b.training_start));
                 break;
             case 'date-desc': // 시간 기준 내림차순 (최신순)
-                sortedTrainings.sort((a, b) => compareDesc(new Date(a.trainingStart), new Date(b.trainingStart)));
+                sortedTrainings.sort((a, b) => compareDesc(a.training_start, b.training_start));
                 break;
             case 'status-in-progress': // 진행 중인 훈련
                 sortedTrainings = sortedTrainings.filter(training => {
                     const today = new Date();
-                    return isBefore(new Date(training.trainingStart), today) && isAfter(new Date(training.trainingEnd), today);
+                    return isBefore(training.training_start, today) && isAfter(training.training_end, today);
                 });
                 break;
             case 'status-completed': // 종료된 훈련
-                sortedTrainings = sortedTrainings.filter(training => isBefore(new Date(training.trainingEnd), new Date()));
+                sortedTrainings = sortedTrainings.filter(training => isBefore(training.training_end, new Date()));
                 break;
             case 'status-upcoming': // 대기 중인 훈련
-                sortedTrainings = sortedTrainings.filter(training => isAfter(new Date(training.trainingStart), new Date()));
+                sortedTrainings = sortedTrainings.filter(training => isAfter(training.training_start, new Date()));
                 break;
             default:
                 break;
@@ -95,7 +100,6 @@ const BlogListing = () => {
                             <MenuItem value="status-upcoming">상태 (대기 중)</MenuItem>
                         </Select>
                     </FormControl>
-
 
                     <Button variant="contained" onClick={handleCreateClick}>
                         새로 만들기

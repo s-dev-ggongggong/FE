@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import { format, differenceInDays, isBefore, isAfter } from 'date-fns';
 import BlankCard from '../../shared/BlankCard';
-import { useNavigate } from 'react-router-dom'; // useNavigate import 추가
+import { useNavigate } from 'react-router-dom';
 
 const CoverImgStyle = styled(CardContent)({
   position: 'absolute',
@@ -50,20 +50,29 @@ const depart = [
 ];
 
 const BlogFeaturedCard = ({ post, index }) => {
-  const navigate = useNavigate(); // useNavigate hook 사용
+  const navigate = useNavigate();
 
+  // 데이터 파싱 및 변환
   const {
-    trainingName,
-    trainingDesc,
-    departTarget,
-    trainingStart,
-    trainingEnd,
-    maxPhishingMail,
-    resourceUser,
-    id, // id 추가
+    training_name: trainingName, // trainingName으로 재명명
+    training_desc: trainingDesc, // trainingDesc으로 재명명
+    dept_target: deptTarget, // deptTarget 그대로 사용
+    training_start: trainingStart,
+    training_end: trainingEnd,
+    max_phishing_mail: maxPhishingMail,
+    resource_user: resourceUser,
+    id,
   } = post;
 
   const mainPost = index === 0;
+
+  // 부서 타겟을 배열로 파싱
+  let parsedDeptTarget = [];
+  try {
+    parsedDeptTarget = JSON.parse(deptTarget.replace(/'/g, '"')); // 문자열을 배열로 변환
+  } catch (error) {
+    console.error('부서 타겟 파싱 오류:', error);
+  }
 
   // 이미지 배열 (기존 Mock 데이터에서 사용된 이미지들)
   const images = [
@@ -101,29 +110,39 @@ const BlogFeaturedCard = ({ post, index }) => {
 
   // 부서 코드 -> 한글 부서명 치환
   const getDeptNames = (ids) => {
+    if (!Array.isArray(ids)) return 'Unknown';
     return ids
       .map((id) => depart.find((dept) => dept.id === id)?.title || `Unknown (${id})`)
       .join(', ');
   };
+
+  // 날짜 변환
+  const isValidDate = (date) => date instanceof Date && !isNaN(date);
+
+  const trainingStartDate = new Date(trainingStart);
+  const trainingEndDate = new Date(trainingEnd);
+
+  const formattedStartDate = isValidDate(trainingStartDate) ? format(trainingStartDate, 'yyyy-MM-dd') : 'N/A';
+  const formattedEndDate = isValidDate(trainingEndDate) ? format(trainingEndDate, 'yyyy-MM-dd') : 'N/A';
 
   // 훈련 상태 계산
   const today = new Date();
   let statusLabel = '';
   let dDayLabel = '';
 
-  if (isBefore(today, new Date(trainingStart))) {
+  if (isBefore(today, trainingStartDate)) {
     statusLabel = '대기중';
-  } else if (isAfter(today, new Date(trainingEnd))) {
+  } else if (isAfter(today, trainingEndDate)) {
     statusLabel = '종료됨';
   } else {
-    const dDay = differenceInDays(new Date(trainingEnd), today);
+    const dDay = differenceInDays(trainingEndDate, today);
     statusLabel = '진행 중';
     dDayLabel = `D-${dDay}`;
   }
 
   // 카드 클릭 시 해당 훈련의 상세 페이지로 이동
   const handleCardClick = () => {
-    navigate(`/apps/training/view/${id}`); // 해당 훈련의 ID로 이동
+    navigate(`/apps/training/view/${id}`);
   };
 
   return (
@@ -135,7 +154,7 @@ const BlogFeaturedCard = ({ post, index }) => {
       sm={12}
       display="flex"
       alignItems="stretch"
-      onClick={handleCardClick} // 카드 클릭 시 handleCardClick 함수 호출
+      onClick={handleCardClick}
     >
       {isLoading ? (
         <Skeleton
@@ -165,12 +184,12 @@ const BlogFeaturedCard = ({ post, index }) => {
                     color={statusLabel === '대기중' ? 'warning' : statusLabel === '종료됨' ? 'default' : 'success'}
                     size="small"
                   />
-                  
+
                   {/* 부서명 Chip 출력 (오른쪽 상단) - 개수만 표시 */}
-                  <Tooltip title={`훈련 부서: ${getDeptNames(departTarget)}`} placement="top">
+                  <Tooltip title={`훈련 부서: ${getDeptNames(parsedDeptTarget)}`} placement="top">
                     <Chip
                       sx={{ marginLeft: 'auto' }}
-                      label={`${departTarget.length}개 부서`}
+                      label={`${parsedDeptTarget.length}개 부서`}
                       size="small"
                       color="primary"
                     />
@@ -185,26 +204,26 @@ const BlogFeaturedCard = ({ post, index }) => {
                     color="inherit"
                     sx={{ textDecoration: 'none' }}
                   >
-                    {trainingName}
+                    {trainingName || '제목 없음'}
                   </Typography>
                   <Typography
                     variant="body2"
                     color="inherit"
                     sx={{ textDecoration: 'none' }}
                   >
-                    {trainingDesc}
+                    {trainingDesc || '설명 없음'}
                   </Typography>
                 </Box>
                 <Stack direction="row" gap={3} alignItems="center">
                   <Stack direction="row" gap={1} alignItems="center">
                     <Typography variant="body2">
-                      {format(new Date(trainingStart), 'yyyy-MM-dd')}
+                      {formattedStartDate}
                     </Typography>
                   </Stack>
                   ~
                   <Stack direction="row" gap={1} alignItems="center">
                     <Typography variant="body2">
-                      {format(new Date(trainingEnd), 'yyyy-MM-dd')}
+                      {formattedEndDate}
                     </Typography>
                   </Stack>
                 </Stack>

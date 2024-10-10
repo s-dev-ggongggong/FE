@@ -4,7 +4,6 @@ import { useTheme } from '@mui/material/styles';
 import {
   Typography,
   TableHead,
-  Avatar,
   Chip,
   Box,
   Table,
@@ -23,16 +22,79 @@ import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
 
-import Breadcrumb from '../../layouts/full/shared/breadcrumb/Breadcrumb';
-import PageContainer from '../../components/container/PageContainer';
-
-import img1 from '../../assets/images/profile/user-1.jpg';
-import img2 from '../../assets/images/profile/user-2.jpg';
-import img3 from '../../assets/images/profile/user-3.jpg';
-import img4 from '../../assets/images/profile/user-4.jpg';
-import img5 from '../../assets/images/profile/user-5.jpg';
-import ParentCard from '../../components/shared/ParentCard';
-import { Stack } from '@mui/system';
+// 훈련용 더미 데이터 설정
+const rows = [
+  {
+    title: 'Cross-Department Security Awareness',
+    user: '김철수',
+    email: 'test1@ggongggong.org',
+    time: '2024-10-11 09:51:40',
+    action: '피싱 링크 클릭함',
+  },
+  {
+    title: 'Cross-Department Phishing Simulation',
+    user: '이영희',
+    email: 'test2@ggongggong.org',
+    time: '2024-10-11 10:00:00',
+    action: '정보 기입함',
+  },
+  {
+    title: 'Departmental Security Drill',
+    user: '박민수',
+    email: 'test3@ggongggong.org',
+    time: '2024-10-11 10:30:45',
+    action: '악성 첨부파일 다운로드',
+  },
+  {
+    title: 'Departmental Security Drill',
+    user: '최경호',
+    email: 'test4@ggongggong.org',
+    time: '2024-10-11 11:00:00',
+    action: '악성 첨부파일 실행',
+  },
+  {
+    title: 'Cross-Department Email Security Training',
+    user: 'Agent',
+    email: '-',
+    time: '2024-10-11 12:00:00',
+    action: '메일 스캔',
+  },
+  {
+    title: 'Corporate-Level Security Assessment',
+    user: 'Agent',
+    email: '-',
+    time: '2024-10-11 12:30:00',
+    action: '피싱 메일 생성',
+  },
+  {
+    title: 'Cross-Department Security Exercise',
+    user: 'Agent',
+    email: '-',
+    time: '2024-10-11 13:00:00',
+    action: '피싱 메일 발송',
+  },
+  {
+    title: 'Inter-Department Phishing Response',
+    user: '한지민',
+    email: 'test5@ggongggong.org',
+    time: '2024-10-11 13:15:00',
+    action: '정보 기입함',
+  },
+  {
+    title: 'Departmental Email Security Training',
+    user: '김현수',
+    email: 'test6@ggongggong.org',
+    time: '2024-10-11 13:30:00',
+    action: '악성 첨부파일 실행',
+  },
+  {
+    title: 'Cross-Department Phishing Awareness',
+    user: '박지훈',
+    email: 'test7@ggongggong.org',
+    time: '2024-10-11 14:00:00',
+    action: '피싱 링크 클릭함',
+  },
+];
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -91,132 +153,10 @@ TablePaginationActions.propTypes = {
   rowsPerPage: PropTypes.number.isRequired,
 };
 
-const rows = [
-  {
-    orderno: 'ORD - 0120145',
-    items: '5',
-    imgsrc: img1,
-    customer: 'Sunil Joshi',
-    total: '550,000',
-    status: 'Completed',
-    date: '10 Jun, 2021 09:51:40',
-  },
-  {
-    orderno: 'ORD - 0120146',
-    items: '1',
-    imgsrc: img2,
-    customer: 'John Deo',
-    total: '45,000',
-    status: 'Pending',
-    date: '10 Jun, 2021 07:46:00',
-  },
-  {
-    orderno: 'ORD - 0120460',
-    items: '3',
-    imgsrc: img3,
-    customer: 'Mily Peter',
-    total: '57,000',
-    status: 'Cancel',
-    date: '10 Jun, 2021 04:19:38',
-  },
-  {
-    orderno: 'ORD - 0124060',
-    items: '11',
-    imgsrc: img4,
-    customer: 'Andrew McDownland',
-    total: '457,000',
-    status: 'Completed',
-    date: '10 Jun, 2021 04:12:29',
-  },
-  {
-    orderno: 'ORD - 0124568',
-    items: '4',
-    imgsrc: img5,
-    customer: 'Christopher Jamil',
-    total: '120,000',
-    status: 'Pending',
-    date: '15 Apr, 2021 04:12:50',
-  },
-  {
-    orderno: 'ORD - 0120146',
-    items: '1',
-    imgsrc: img2,
-    customer: 'John Deo',
-    total: '45,000',
-    status: 'Pending',
-    date: '10 Jun, 2021 07:46:00',
-  },
-  {
-    orderno: 'ORD - 0120460',
-    items: '3',
-    imgsrc: img3,
-    customer: 'Mily Peter',
-    total: '57,000',
-    status: 'Cancel',
-    date: '10 Jun, 2021 04:19:38',
-  },
-  {
-    orderno: 'ORD - 0124060',
-    items: '11',
-    imgsrc: img4,
-    customer: 'Andrew McDownland',
-    total: '457,000',
-    status: 'Completed',
-    date: '10 Jun, 2021 04:12:29',
-  },
-  {
-    orderno: 'ORD - 0124568',
-    items: '4',
-    imgsrc: img5,
-    customer: 'Christopher Jamil',
-    total: '120,000',
-    status: 'Pending',
-    date: '15 Apr, 2021 04:12:50',
-  },
-  {
-    orderno: 'ORD - 0120145',
-    items: '5',
-    imgsrc: img1,
-    customer: 'Sunil Joshi',
-    total: '550,000',
-    status: 'Completed',
-    date: '10 Jun, 2021 09:51:40',
-  },
-  {
-    orderno: 'ORD - 0124060',
-    items: '11',
-    imgsrc: img4,
-    customer: 'Andrew McDownland',
-    total: '457,000',
-    status: 'Completed',
-    date: '10 Jun, 2021 04:12:29',
-  },
-  {
-    orderno: 'ORD - 0124568',
-    items: '4',
-    imgsrc: img5,
-    customer: 'Christopher Jamil',
-    total: '120,000',
-    status: 'Pending',
-    date: '15 Apr, 2021 04:12:50',
-  },
-].sort((a, b) => (a.calories < b.calories ? -1 : 1));
-
-const BCrumb = [
-  {
-    to: '/',
-    title: 'Home',
-  },
-  {
-    title: 'Pagination Table',
-  },
-];
-
 const PaginationTable = () => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-  // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
   const handleChangePage = (event, newPage) => {
@@ -229,121 +169,98 @@ const PaginationTable = () => {
   };
 
   return (
-    <PageContainer title="Pagination Table" description="this is Pagination Table page">
-      {/* breadcrumb */}
-      <Breadcrumb title="Pagination Table" items={BCrumb} />
-      {/* end breadcrumb */}
-      <ParentCard title="Pagination Table">
-        <Paper variant="outlined">
-          <TableContainer>
-            <Table
-              aria-label="custom pagination table"
-              sx={{
-                whiteSpace: 'nowrap',
-              }}
-            >
-              <TableHead>
-                <TableRow>
-                  <TableCell>
-                    <Typography variant="h6">Order No.</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="h6">Customer</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="h6">Items</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="h6">Total</Typography>
-                  </TableCell>
-
-                  <TableCell>
-                    <Typography variant="h6">Date</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="h6">Status</Typography>
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {(rowsPerPage > 0
-                  ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  : rows
-                ).map((row) => (
-                  <TableRow key={row.orderno}>
-                    <TableCell>
-                      <Typography variant="h6">{row.orderno}</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Stack direction="row" spacing={2} alignItems="center">
-                        <Avatar
-                          src={row.imgsrc}
-                          alt={row.imgsrc}
-                          width="30"
-                        />
-                        <Typography variant="h6" fontWeight="600">
-                          {row.customer}
-                        </Typography>
-                      </Stack>
-                    </TableCell>
-                    <TableCell>
-                      <Typography color="textSecondary" variant="h6" fontWeight="400">
-                        {row.items}
-                      </Typography>
-                    </TableCell>
-
-                    <TableCell>
-                      <Typography color="textSecondary" variant="h6" fontWeight="400">
-                        ${row.total}
-                      </Typography>
-                    </TableCell>
-
-                    <TableCell>
-                      <Typography variant="h6">{row.date}</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Chip color={row.status === 'Completed' ? 'success' : row.status === 'Pending' ? 'warning' : row.status === 'Cancel'  ? 'error' : 'secondary'}
-                        sx={{
-                          borderRadius: '6px',
-                        }}
-                        size="small"
-                        label={row.status}
-                      />
-                    </TableCell>
-                  </TableRow>
-                ))}
-
-                {emptyRows > 0 && (
-                  <TableRow style={{ height: 53 * emptyRows }}>
-                    <TableCell colSpan={6} />
-                  </TableRow>
-                )}
-              </TableBody>
-              <TableFooter>
-                <TableRow>
-                  <TablePagination
-                    rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-                    colSpan={6}
-                    count={rows.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    SelectProps={{
-                      inputprops: {
-                        'aria-label': 'rows per page',
-                      },
-                      native: true,
+    <Paper variant="outlined">
+      <TableContainer>
+        <Table aria-label="custom pagination table" sx={{ whiteSpace: 'nowrap' }}>
+          <TableHead>
+            <TableRow>
+              <TableCell>
+                <Typography variant="h6">훈련 제목</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography variant="h6">사용자</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography variant="h6">이메일</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography variant="h6">시간</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography variant="h6">행위</Typography>
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {(rowsPerPage > 0
+              ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              : rows
+            ).map((row, index) => (
+              <TableRow key={index}>
+                <TableCell>
+                  <Typography variant="h6">{row.title}</Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography color="textSecondary" variant="h6" fontWeight="400">
+                    {row.user}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography color="textSecondary" variant="h6" fontWeight="400">
+                    {row.email}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography variant="h6">{row.time}</Typography>
+                </TableCell>
+                <TableCell>
+                  <Chip
+                    color={
+                      row.action === '피싱 링크 클릭함' || row.action === '정보 기입함'
+                        ? 'warning'
+                        : row.action === '악성 첨부파일 다운로드' || row.action === '악성 첨부파일 실행'
+                        ? 'error'
+                        : 'default'
+                    }
+                    sx={{
+                      borderRadius: '6px',
                     }}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                    ActionsComponent={TablePaginationActions}
+                    size="small"
+                    label={row.action}
                   />
-                </TableRow>
-              </TableFooter>
-            </Table>
-          </TableContainer>
-        </Paper>
-      </ParentCard>
-    </PageContainer>
+                </TableCell>
+              </TableRow>
+            ))}
+
+            {emptyRows > 0 && (
+              <TableRow style={{ height: 53 * emptyRows }}>
+                <TableCell colSpan={6} />
+              </TableRow>
+            )}
+          </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                colSpan={6}
+                count={rows.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                SelectProps={{
+                  inputProps: {
+                    'aria-label': 'rows per page',
+                  },
+                  native: true,
+                }}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+                ActionsComponent={TablePaginationActions}
+              />
+            </TableRow>
+          </TableFooter>
+        </Table>
+      </TableContainer>
+    </Paper>
   );
 };
 

@@ -67,7 +67,7 @@ const Menuitems = [
   },
   {
     navlabel: true,
-    subheader: 'Apps',
+    subheader: 'Trainings',
   },
   {
     id: uniqueId(),
@@ -77,10 +77,15 @@ const Menuitems = [
     chipColor: 'secondary',
     href: '/apps/blog/posts',
   },
-
   {
     id: uniqueId(),
-    title: '훈련 데이터 관리',
+    title: '훈련 일정',
+    icon: IconCalendar,
+    href: '/apps/calendar',
+  },
+  {
+    id: uniqueId(),
+    title: '훈련 데이터 설정',
     icon: IconChartDonut3,
     href: '/apps/data/',
     children: [
@@ -96,29 +101,13 @@ const Menuitems = [
         icon: IconPoint,
         href: '/apps/data/urls',
       },
+      {
+        id: uniqueId(),
+        title: 'Agent 관리',
+        icon: IconPoint,
+        href: '/apps/tickets',
+      },
     ],
-  },
-  {
-    navlabel: true,
-    subheader: 'Support',
-  },
-  {
-    id: uniqueId(),
-    title: '훈련 일정',
-    icon: IconCalendar,
-    href: '/apps/calendar',
-  },
-  {
-    id: uniqueId(),
-    title: '메일 서버 관리',
-    icon: IconMail,
-    href: '/apps/email',
-  },
-  {
-    id: uniqueId(),
-    title: 'Agent 관리',
-    icon: IconTicket,
-    href: '/apps/tickets',
   },
   {
     navlabel: true,

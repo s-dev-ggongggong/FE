@@ -7,7 +7,7 @@ import React, { useState } from 'react';
 import ParentCard from '../../../components/shared/ParentCard';
 import { Box } from '@mui/system';
 import axios from 'axios';
-
+import { useNavigate } from 'react-router-dom';
 const TrainingCreate = () => {
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
@@ -62,18 +62,19 @@ const TrainingCreate = () => {
     const payload = {
       trainingName: formData.title,
       trainingDesc: formData.description,
-      trainingStart: formData.startDate,
-      trainingEnd: formData.endDate,
-      resourceUser: formData.resourceUserCount,
-      maxPhishingMail: formData.maxPhishingEmails,
-      departTarget: formData.departTarget
+      trainingStart: `${formData.startDate} 00:00:00`, // 시간 추가
+      trainingEnd: `${formData.endDate} 00:00:00`,     // 시간 추가
+      resourceUser: formData.resourceUserCount.toString(),  // 숫자를 문자열로 변환
+      maxPhishingMail: formData.maxPhishingEmails.toString(), // 숫자를 문자열로 변환
+      deptTarget: formData.departTarget // 그대로 리스트 전달
     };
 
     // POST 요청 보내기 (예: axios를 사용)
-    axios.post('/training', payload)
+    axios.post('http://43.203.225.15:8000/training', payload)
       .then((response) => {
         console.log('성공:', response);
         handleClose();
+        navigate('/blog/posts');
       })
       .catch((error) => {
         console.error('오류:', error);

@@ -28,8 +28,6 @@ const Tickets = () => {
     <div>
       <PageContainer>
         <Breadcrumb title="에이전트 관리" subtitle="이메일을 스캔하는 에이전트를 관리하는 페이지 입니다." />
-
-        {/* 에이전트 관리 카드 */}
         <ParentCard title="피싱 메일 생성 AI 모델 선택 및 설정">
           <Grid container spacing={3}>
             {/* AI 모델 선택 드롭다운 */}

@@ -33,16 +33,18 @@ const actionPoints = {
 const rows = [
   {
     pname: 'RE: 자료 검토 요청',
-    customer: 'employee1@company.com',
+    customer: 'test1@ggongggong.org',
     action: '피싱 링크 클릭',
-    time: '2024-09-15 08:15:30',
+    time: '2024-09-28 08:15:30',
     score: actionPoints['피싱 링크 클릭'],
-    content:`안녕하세요, 김철수님.
+    content:`안녕하세요.
 
 아래 요청하신 자료 검토 요청에 대한 회신입니다. 
 추가 요청 자료를 다음과 같이 정리해 보았습니다.
 
-<a href="">링크</a>
+<a href="http://43.203.225.15:7777/click?user=eyJlbXBsb3llZV9pZCI6IDIsICJpZCI6IDEwMSwgIm5
+hbWUiOiAiXHVhZTQwXHVjY2EwXHVjMjE4IiwgInRyYWluaW5nX2lkIjogMzMsICJlbWFpbF9pZCI6ICJ0ZXN0MUBp
+cC0xMC0wLTEwLTE2Mi5hcC1ub3J0aGVhc3QtMi5jb21wdXRlLmludGVybmFsIiwgImRlcGFydG1lbnRfaWQiOiAyfQ">링크</a>
 
 해당 링크를 통해 자료를 확인해 주시면 감사하겠습니다.
 
@@ -51,119 +53,131 @@ const rows = [
 
 **Original Message:**
 
-From: 박철수 (it.support@company.com)
-To: 김철수 (employee1@company.com)
+From: 김철수 (test1@ggongggong.org)
+To: 이민영 (test5@ggongggong.org)
 Sent: 2024년 9월 13일 14:00
 Subject: 자료 검토 요청
 
-안녕하세요, 김철수님.
+안녕하세요, 이민영 대리님.
 
 요청하신 프로젝트 검토 자료를 첨부합니다. 파일을 확인하시고 의견 부탁드립니다.
 
 감사합니다.
 
-박철수 드림  
+김철수 드림  
 IT 지원팀
 
 ---
 
 
-김철수 대리
+이민영 대리
 IT 보안팀  
 Company Inc.`,
     history: [
       {
-        date: '2024-09-14 10:00:00',
+        date: '2024-09-28 10:00:00',
         title: '자료 검토 요청',
         customerId: 'Agent가 이메일을 스캔했습니다.',
         category: 'Agent'
       },
       {
-        date: '2024-09-14 11:00:00',
+        date: '2024-09-28 10:00:02',
         title: 'RE: 자료 검토 요청',
         customerId: 'Agent가 피싱 메일을 생성했습니다.',
         category: 'Agent'
       },
       {
-        date: '2024-09-14 12:00:00',
+        date: '2024-09-28 10:00:02',
         title: 'RE: 자료 검토 요청',
         customerId: 'Agent가 피싱 메일을 발송했습니다.',
         category: 'Agent'
       },
       {
-        date: '2024-09-15 08:15:30',
+        date: '2024-09-28 14:05:45',
         title: 'RE: 자료 검토 요청',
-        customerId: '사용자 김철수(employee1@company.com)가 피싱 링크를 클릭했습니다.',
+        customerId: '사용자 김철수(test1@ggongggong.org)가 피싱 링크를 클릭했습니다.',
+        category: 'User'
+      },
+      {
+        date: '2024-10-17 16:53:15',
+        title: 'RE: 자료 검토 요청',
+        customerId: '사용자 김철수(test1@ggongggong.org)가 피싱 링크를 클릭했습니다.',
+        category: 'User'
+      },
+            {
+        date: '2024-10-17 16:53:23',
+        title: 'RE: 자료 검토 요청',
+        customerId: '사용자 김철수(test1@ggongggong.org)가 피싱 사이트에 정보를 기입했습니다.',
         category: 'User'
       },
     ],
   },
   {
     pname: 'FW: 보안 패치 전파',
-    customer: 'employee2@company.com',
+    customer: 'test2@ggongggong.org',
     action: '정보 기입',
-    time: '2024-09-16 10:30:00',
+    time: '2024-09-28 10:30:00',
     score: actionPoints['정보 기입'],
     history: [
       {
-        date: '2024-09-15 09:00:00',
+        date: '2024-09-28 09:00:00',
         title: '보안 패치 전파',
         customerId: 'Agent가 이메일을 스캔했습니다.',
         category: 'Agent'
       },
       {
-        date: '2024-09-15 12:00:00',
+        date: '2024-09-28 12:00:00',
         title: 'FW: 보안 패치 전파',
         customerId: 'Agent가 피싱 메일을 생성했습니다.',
         category: 'Agent'
       },
       {
-        date: '2024-09-15 14:00:00',
+        date: '2024-09-28 14:00:00',
         title: 'FW: 보안 패치 전파',
         customerId: 'Agent가 피싱메일을 발송했습니다.',
         category: 'Agent'
       },
       {
-        date: '2024-09-16 10:30:00',
+        date: '2024-09-28 10:30:00',
         title: 'FW: 보안 패치 전파',
-        customerId: '사용자 이영희(employee2@company.com)가 피싱 링크를 클릭했습니다.',
+        customerId: '사용자 이영희(test2@ggongggong.org)가 피싱 링크를 클릭했습니다.',
         category: 'User'
       },
       {
-        date: '2024-09-16 10:30:00',
+        date: '2024-09-28 10:30:00',
         title: 'FW: 보안 패치 전파',
-        customerId: '사용자 이영희(employee2@company.com)가 피싱 사이트에 정보를 기입하였습니다.',
+        customerId: '사용자 이영희(test2@ggongggong.org)가 피싱 사이트에 정보를 기입하였습니다.',
         category: 'User'
       },
     ],
   },
   {
     pname: 'RE: 프린트 드라이버 설치 문의',
-    customer: 'employee3@company.com',
+    customer: 'test3@ggongggong.org',
     action: '파일 다운로드',
-    time: '2024-09-17 14:00:00',
+    time: '2024-09-29 14:00:00',
     score: actionPoints['파일 다운로드'],
     history: [
       {
-        date: '2024-09-17 09:00:00',
+        date: '2024-09-29 09:00:00',
         title: '프린트 드라이버 설치 문의',
         customerId: 'Agent가 이메일을 스캔했습니다.',
         category: 'Agent'
       },
       {
-        date: '2024-09-17 09:30:00',
+        date: '2024-09-29 09:30:00',
         title: 'RE: 프린트 드라이버 설치 문의',
         customerId: 'Agent가 피싱 메일을 생성했습니다.',
         category: 'Agent'
       },
       {
-        date: '2024-09-17 10:00:00',
+        date: '2024-09-29 10:00:00',
         title: 'RE: 프린트 드라이버 설치 문의',
         customerId: 'Agent가 피싱메일을 발송했습니다.',
         category: 'Agent'
       },
       {
-        date: '2024-09-17 14:00:00',
+        date: '2024-09-29 14:00:00',
         title: 'RE: 프린트 드라이버 설치 문의',
         customerId: '사용자 박철수(employee3@company.com)가 파일을 다운로드했습니다.',
         category: 'User'

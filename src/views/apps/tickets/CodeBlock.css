@@ -1,0 +1,31 @@
+.code-block {
+    background-color: #f6f8fa;
+    color: #333;
+    padding: 10px;
+    border-radius: 6px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    position: relative;
+  }
+  
+  .code-block code {
+    display: block;
+    overflow-x: auto;
+  }
+  
+  .code-block::before {
+    content: attr(data-line-numbers);
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding: 10px;
+    color: #888;
+    background-color: #f6f8fa;
+    text-align: right;
+    border-right: 1px solid #e1e4e8;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  

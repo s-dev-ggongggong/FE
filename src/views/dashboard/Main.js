@@ -46,7 +46,7 @@ const Main = () => {
         labels: ["예정됨", "진행 중", "완료"]
     };
 
-    const seriesdoughnutchart1 = [45, 15, 27];
+    const seriesdoughnutchart1 = [17, 19, 14];
     const chartColors = optionsdoughnutchart1.colors; // 도넛 차트의 색상 배열
 
     // 바 차트 옵션 및 랜덤 시리즈 데이터

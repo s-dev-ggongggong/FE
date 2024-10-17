@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   Grid,
   Paper,
-  Typography,
   Table,
   TableBody,
   TableCell,
@@ -15,7 +14,6 @@ import { Add, Edit, Delete } from '@mui/icons-material';
 import PageContainer from '../../../components/container/PageContainer';
 import Breadcrumb from '../../../layouts/full/shared/breadcrumb/Breadcrumb';
 import ParentCard from '../../../components/shared/ParentCard';
-import { height } from '@mui/system';
 
 const Urls = () => {
   // URL 목록 및 선택한 URL 상태 정의
@@ -44,8 +42,6 @@ const Urls = () => {
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
-        // 파일 내용에서 URL을 추출하여 목록에 추가하는 로직을 구현할 수 있습니다.
-        // 여기서는 단순히 파일 이름을 URL로 추가하는 예제입니다.
         const newUrl = {
           id: urlList.length + 1,
           title: `New Uploaded: ${file.name}`,
@@ -80,7 +76,7 @@ const Urls = () => {
         <Grid item xs={6}>
           <ParentCard title="URL 목록">
             {/* URL 리스트 테이블 */}
-            <TableContainer component={Paper}>
+            <TableContainer component={Paper} style={{ height: '500px' }}>
               <Table size="small"> {/* DenseTable 스타일을 적용하기 위해 size="small" 사용 */}
                 <TableHead>
                   <TableRow>
@@ -148,8 +144,7 @@ const Urls = () => {
         {/* 오른쪽: 선택된 URL 미리보기 */}
         <Grid item xs={6}>
           <ParentCard>
-
-            <TableContainer component={Paper} style={{ height: '500px' }}>
+            <TableContainer component={Paper} style={{ height: '525px' }}>
               {/* iframe으로 선택된 URL을 보여줌 */}
               {selectedUrl ? (
                 <iframe
@@ -163,7 +158,6 @@ const Urls = () => {
                 <></>
               )}
             </TableContainer>
-
           </ParentCard>
         </Grid>
 

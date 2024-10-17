@@ -30,10 +30,10 @@ const TrainingView = () => {
     // 더미 데이터를 설정
     const dummyData = {
       training: {
-        training_name: 'Advanced Social Engineering Simulation',
+        training_name: 'Social Engineering Phishing Simulation',
         training_desc: '이 훈련은 피싱 메일 대응을 위한 모의 훈련입니다.',
-        training_start: '2023-09-01T00:00:00Z',
-        training_end: '2023-10-30T23:59:59Z',
+        training_start: '2023-09-28T00:00:00Z',
+        training_end: '2023-10-20T23:59:59Z',
         dept_target: JSON.stringify([1, 2, 3]), // 부서 ID 리스트
         max_phishing_mail: 50,
         resource_user: '홍길동',

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Grid, FormControlLabel, Button, Typography, MenuItem } from '@mui/material'; // MenuItem 추가
+import { Grid, FormControlLabel, Button, Typography, MenuItem, TextField, CircularProgress, Collapse } from '@mui/material';
 import PageContainer from '../../../components/container/PageContainer';
 import Breadcrumb from '../../../layouts/full/shared/breadcrumb/Breadcrumb';
 import CustomFormLabel from '../../../components/forms/theme-elements/CustomFormLabel';
@@ -7,125 +7,66 @@ import CustomSelect from '../../../components/forms/theme-elements/CustomSelect'
 import CustomSwitch from '../../../components/forms/theme-elements/CustomSwitch';
 import ParentCard from '../../../components/shared/ParentCard';
 import { Stack } from '@mui/system';
-import './CodeBlock.css'; // Custom CSS for code block
+import axios from 'axios';
 
 const Tickets = () => {
-  // 상태 관리 변수 선언
   const [selectedModel, setSelectedModel] = useState('gpt-3.5');
   const [localModelEnabled, setLocalModelEnabled] = useState(false);
-  const [prompt, setPrompt] = useState('');
+  const [from, setFrom] = useState('');
+  const [to, setTo] = useState('');
+  const [subject, setSubject] = useState('');
+  const [body, setBody] = useState('');
   const [result, setResult] = useState('');
+  const [loading, setLoading] = useState(false); // 로딩 상태
+  const [showPrompt, setShowPrompt] = useState(false); // 프롬프트 표시 상태
 
-  // 모델별 프롬프트 및 결과 예시 데이터
-  const modelExamples = {
-    'gpt-3.5': {
-      prompt: `
-        phishing_prompt = (
-            이메일 내용을 분석해서 한국어로 그 이메일 내용에 답장을 하기 위한 이메일을 작성해 주세요."
-            발신자와 수신자는 같은 부서의 직원입니다."
-            답장 이메일 내용에는 기존 이메일에서 원했던 요청에 대한 답변 내용이 들어가 있어야 합니다."
-            답변에 따라 링크를 넣을 경우, example.com이라는 url이 들어있어야 합니다."
-            답장 이메일의 제목은 RE: (기존 이메일의 제목) 형식이어야 합니다."
-            발신자: {from_text}"
-            수신자: {to_text}"
-            제목: {subject_text}"
-            본문:{body_text}"
-            이메일 제목과 본문을 구분하여 작성해 주세요."
-        )`,
-      result: 'The capital of France is Paris.',
-    },
-    'gpt-4': {
-      prompt: `phishing_prompt = (
-            다음 원본 이메일 내용을 분석해서 한국어로 그 이메일 내용에 답장을 하기 위한 이메일을 작성해 주세요."
-            발신자와 수신자는 같은 부서의 직원입니다."
-            답장 이메일 내용에는 기존 이메일에서 원했던 요청에 대한 답변 내용이 들어가 있어야 합니다."
-            답변에 따라 링크를 넣을 경우, example.com이라는 url이 들어있어야 합니다."
-            답장 이메일의 제목은 RE: (기존 이메일의 제목) 형식이어야 합니다."
-            발신자: {from_text}"
-            수신자: {to_text}"
-            제목: {subject_text}"
-            본문:{body_text}"
-            이메일 제목과 본문을 구분하여 작성해 주세요."
-        )`,
-      result: 'The theory of relativity, proposed by Einstein, states that time and space are relative and not absolute concepts.',
-    },
-    'local-llm': {
-      prompt: `phishing_prompt = (
-            다음 원본 이메일 내용을 분석해서 한국어로 그 이메일 내용에 답장을 하기 위한 이메일을 작성해 주세요."
-            발신자와 수신자는 같은 부서의 직원입니다."
-            답장 이메일 내용에는 기존 이메일에서 원했던 요청에 대한 답변 내용이 들어가 있어야 합니다."
-            답변에 따라 링크를 넣을 경우, example.com이라는 url이 들어있어야 합니다."
-            답장 이메일의 제목은 RE: (기존 이메일의 제목) 형식이어야 합니다."
-            발신자: {from_text}"
-            수신자: {to_text}"
-            제목: {subject_text}"
-            본문:{body_text}"
-            이메일 제목과 본문을 구분하여 작성해 주세요."
-        )`,
-      result: '안녕하세요, 어떻게 지내세요?',
-    },
-    'custom-model': {
-      prompt: `phishing_prompt = (
-            다음 원본 이메일 내용을 분석해서 한국어로 그 이메일 내용에 답장을 하기 위한 이메일을 작성해 주세요."
-            발신자와 수신자는 같은 부서의 직원입니다."
-            답장 이메일 내용에는 기존 이메일에서 원했던 요청에 대한 답변 내용이 들어가 있어야 합니다."
-            답변에 따라 링크를 넣을 경우, example.com이라는 url이 들어있어야 합니다."
-            답장 이메일의 제목은 RE: (기존 이메일의 제목) 형식이어야 합니다."
-            발신자: {from_text}"
-            수신자: {to_text}"
-            제목: {subject_text}"
-            본문:{body_text}"
-            이메일 제목과 본문을 구분하여 작성해 주세요."
-        )`,
-      result: 'The stock market has seen significant volatility recently, with tech stocks experiencing a sharp decline...',
-    },
+  const phishingPrompt = `
+    다음 원본 이메일 내용을 분석해서 답장하는 내용의 이메일을 작성해 주세요.
+    발신자와 수신자는 같은 부서의 직원입니다.
+    상대방을 부르는 호칭은 생략합니다.
+    답장 이메일 내용에는 기존 이메일에서 원했던 요청에 대한 답변 내용이 들어가 있어야 합니다.
+    답변에 따라 링크를 무조건 넣으며, 링크는 [example.com]이며 단 한번만 들어있어야 합니다.
+    원본 메일 내용에 따라 맥락을 파악하여 템플릿 종류를 반환해줍니다. 템플릿 종류는 별도의 JSON 형식으로 함께 반환해 주세요. JSON의 키는 'template_type' 입니다.
+    반환 할 수 있는 템플릿의 종류는 다음과 같습니다. NAVER, DAUM, GITHUB, MSOFFICE, ZOOM, GOOGLE, DROPBOX, FACEBOOK, COUPANG, SLACK.
+    그 이외에 자체 다운로드 링크면 DOWNLOAD, 모두 해당하지 않을 경우 DEFAULT를 반환합니다.
+    답장 이메일의 제목은 RE: (기존 이메일의 제목) 형식이어야 합니다.
+    발신자: {from}
+    수신자: {to}
+    제목: {subject}
+    본문: {body}
+
+    템플릿을 이메일 본문과 구문하여 쉽게 분리할 수 있게 작성해주세요.
+    이메일 제목과 본문을 구분하여 작성해 주세요.
+    제목은 반드시 제목: 으로 시작하고, 본문은 반드시 본문: 으로 시작해야 합니다.
+  `;
+
+  // API 호출 함수
+  const generateResult = async () => {
+    setLoading(true); // 로딩 시작
+    try {
+      const response = await axios.post('http://43.203.225.15:7777/api/generate', {
+        model: selectedModel,
+        from,
+        to,
+        subject,
+        body,
+        localModelEnabled,
+      });
+      setResult(response.data.result);
+    } catch (error) {
+      console.error('Error generating result:', error);
+      setResult('Error generating result. Please try again.');
+    } finally {
+      setLoading(false); // 로딩 종료
+    }
   };
-  const sample = `
-  
-  안녕하세요, 김철수님.
 
-아래 요청하신 자료 검토 요청에 대한 회신입니다. 
-추가 요청 자료를 다음과 같이 정리해 보았습니다.
-
-<a href="http://43.203.225.15:7777/click?user=eyJlbXBsb3llZV9pZCI6IDIsICJpZCI6IDEwMSwgIm5hbWUiOiAiXHVhZTQwXHVjY2EwXHVjMjE4IiwgInRyYWluaW5nX2lkIjogMzMsICJlbWFpbF9pZCI6ICJ0ZXN0MUBpcC0xMC0wLTEwLTE2Mi5hcC1ub3J0aGVhc3QtMi5jb21wdXRlLmludGVybmFsIiwgImRlcGFydG1lbnRfaWQiOiAyfQ">링크</a>
-
-해당 링크를 통해 자료를 확인해 주시면 감사하겠습니다.
-
-
----
-
-**Original Message:**
-
-From: 박철수 (it.support@company.com)
-To: 김철수 (employee1@company.com)
-Sent: 2024년 9월 13일 14:00
-Subject: 자료 검토 요청
-
-안녕하세요, 김철수님.
-
-요청하신 프로젝트 검토 자료를 첨부합니다. 파일을 확인하시고 의견 부탁드립니다.
-
-감사합니다.
-
-박철수 드림  
-IT 지원팀
-
----
-
-
-김철수 대리
-IT 보안팀  
-Company Inc.`;
-
-  // AI 모델 드롭다운 선택 처리 함수
+  // 모델 선택 처리
   const handleModelChange = (event) => {
-    const model = event.target.value;
-    setSelectedModel(model);
-    setPrompt(modelExamples[model].prompt);
-    setResult(modelExamples[model].result);
+    setSelectedModel(event.target.value);
   };
 
-  // 로컬 모델 스위치 처리 함수
+  // 로컬 모델 활성화 처리
   const handleLocalModelSwitch = (event) => {
     setLocalModelEnabled(event.target.checked);
   };
@@ -133,10 +74,10 @@ Company Inc.`;
   return (
     <div>
       <PageContainer>
-        <Breadcrumb title="에이전트 관리" subtitle="이메일을 스캔하는 에이전트를 관리하는 페이지 입니다." />
-        <ParentCard title="피싱 메일 생성 AI 모델 선택 및 설정">
+        <Breadcrumb title="에이전트 관리" subtitle="AI를 활용한 피싱 메일 생성 플랫폼" />
+        <ParentCard title="피싱 메일 생성 AI">
           <Grid container spacing={3}>
-            {/* AI 모델 선택 드롭다운 */}
+            {/* AI 모델 선택 */}
             <Grid item xs={12} sm={6} lg={3}>
               <CustomFormLabel htmlFor="ai-model-select">AI 모델 선택</CustomFormLabel>
               <CustomSelect
@@ -153,35 +94,103 @@ Company Inc.`;
               </CustomSelect>
             </Grid>
 
-            {/* 로컬 모델 활성화 스위치 */}
-            <Grid item xs={12} sm={6} lg={9}>
+            {/* 로컬 모델 활성화 */}
+            <Grid item xs={12} sm={6} lg={3}>
               <CustomFormLabel>로컬 모델 활성화</CustomFormLabel>
               <FormControlLabel
                 control={<CustomSwitch checked={localModelEnabled} onChange={handleLocalModelSwitch} />}
                 label="로컬 LLM 사용"
               />
-               <CustomFormLabel>프롬프트 코드</CustomFormLabel>
-              <pre className="code-block">
-                <code>
-                  {prompt}
-                </code>
-              </pre>
-              <hr/>
-              <CustomFormLabel>샘플 피싱 메일</CustomFormLabel>
-              <pre className="code-block">
-                <code>
-                  {sample}
-                </code>
-              </pre>
+            </Grid>
+
+            {/* 프롬프트 표시 토글 */}
+            <Grid item xs={12}>
+              <Button
+                variant="text"
+                color="primary"
+                onClick={() => setShowPrompt(!showPrompt)}
+              >
+                {showPrompt ? '프롬프트 숨기기' : '프롬프트 보기'}
+              </Button>
+              <Collapse in={showPrompt}>
+                <Typography
+                  variant="body2"
+                  style={{
+                    whiteSpace: 'pre-wrap',
+                    backgroundColor: '#f5f5f5',
+                    padding: '10px',
+                    borderRadius: '5px',
+                    marginTop: '10px',
+                  }}
+                >
+                  {phishingPrompt}
+                </Typography>
+              </Collapse>
+            </Grid>
+
+            {/* 이메일 입력 필드 */}
+            <Grid item xs={12}>
+              <CustomFormLabel>From</CustomFormLabel>
+              <TextField
+                fullWidth
+                variant="outlined"
+                placeholder="발신자 이메일 주소를 입력하세요."
+                value={from}
+                onChange={(e) => setFrom(e.target.value)}
+              />
+
+              <CustomFormLabel>To</CustomFormLabel>
+              <TextField
+                fullWidth
+                variant="outlined"
+                placeholder="수신자 이메일 주소를 입력하세요."
+                value={to}
+                onChange={(e) => setTo(e.target.value)}
+              />
+
+              <CustomFormLabel>Subject</CustomFormLabel>
+              <TextField
+                fullWidth
+                variant="outlined"
+                placeholder="이메일 제목을 입력하세요."
+                value={subject}
+                onChange={(e) => setSubject(e.target.value)}
+              />
+
+              <CustomFormLabel>Body</CustomFormLabel>
+              <TextField
+                multiline
+                rows={6}
+                fullWidth
+                variant="outlined"
+                placeholder="이메일 본문을 입력하세요."
+                value={body}
+                onChange={(e) => setBody(e.target.value)}
+              />
+            </Grid>
+
+            {/* 결과 출력 */}
+            <Grid item xs={12}>
+              <CustomFormLabel>생성된 결과</CustomFormLabel>
+              <Typography
+                variant="body1"
+                style={{ whiteSpace: 'pre-wrap', backgroundColor: '#f5f5f5', padding: '10px', borderRadius: '5px' }}
+                dangerouslySetInnerHTML={{ __html: result || '결과가 여기에 표시됩니다.' }}
+              />
             </Grid>
           </Grid>
 
-          {/* AI 모델 저장 버튼 */}
+          {/* 버튼 */}
           <Stack direction="row" spacing={2} justifyContent="flex-end" mt={2}>
-            <Button variant="contained" color="primary">
-              저장
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={generateResult}
+              disabled={loading} // 로딩 중 버튼 비활성화
+            >
+              {loading ? <CircularProgress size={24} color="inherit" /> : '결과 생성'}
             </Button>
-            <Button variant="outlined" color="secondary">
+            <Button variant="outlined" color="secondary" disabled={loading}>
               취소
             </Button>
           </Stack>

@@ -89,12 +89,12 @@ const Menuitems = [
     icon: IconChartDonut3,
     href: '/apps/data/',
     children: [
-      {
-        id: uniqueId(),
-        title: '첨부 파일',
-        icon: IconPoint,
-        href: '/apps/data/files',
-      },
+      // {
+      //   id: uniqueId(),
+      //   title: '첨부 파일',
+      //   icon: IconPoint,
+      //   href: '/apps/data/files',
+      // },
       {
         id: uniqueId(),
         title: '피싱 링크',
